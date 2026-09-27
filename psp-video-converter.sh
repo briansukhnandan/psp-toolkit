@@ -4,8 +4,20 @@
 
 set -euo pipefail
 
-# Add input filename extensions here as support is added.
-supported_formats=(mp4 mkv)
+# Common video containers supported by the installed ffmpeg build. Add further
+# filename extensions here when a compatible source format is encountered.
+supported_formats=(
+    mp4 m4v mov
+    mkv webm
+    avi divx
+    mpg mpeg mpe m2v vob
+    ts m2ts mts
+    wmv asf
+    flv f4v
+    3gp 3g2
+    ogv ogm
+    dv
+)
 
 printf -v supported_formats_text '.%s, ' "${supported_formats[@]}"
 supported_formats_text=${supported_formats_text%, }

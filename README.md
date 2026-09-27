@@ -2,6 +2,8 @@
 
 Convert a video file to a compact, PSP-compatible H.264/AAC MP4 file.
 
+Requires [ffmpeg](https://ffmpeg.org/download.html)
+
 ## Usage
 
 From this repository, pass exactly one file to the converter:
@@ -15,11 +17,19 @@ MP4 to the PSP's `VIDEO` directory.
 
 ## Supported input formats
 
-- `.mp4`
-- `.mkv`
+The converter accepts these common video filename extensions; `ffmpeg` performs
+the format and codec detection.
 
-Add newly supported filename extensions to the `supported_formats` list in
-`psp-video-converter.sh` and to this section.
+- MP4 / QuickTime: `.mp4`, `.m4v`, `.mov`
+- Matroska / WebM: `.mkv`, `.webm`
+- AVI: `.avi`, `.divx`
+- MPEG / DVD video: `.mpg`, `.mpeg`, `.mpe`, `.m2v`, `.vob`
+- MPEG transport streams: `.ts`, `.m2ts`, `.mts`
+- Windows Media: `.wmv`, `.asf`
+- Flash video: `.flv`, `.f4v`
+- 3GPP: `.3gp`, `.3g2`
+- Ogg video: `.ogv`, `.ogm`
+- Digital Video: `.dv`
 
 ## Why
 
