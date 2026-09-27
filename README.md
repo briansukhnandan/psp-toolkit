@@ -6,14 +6,27 @@ Requires [ffmpeg](https://ffmpeg.org/download.html)
 
 ## Usage
 
-From this repository, pass exactly one file to the converter:
+Convert one file with `-f`:
 
 ```bash
-./psp-video-converter.sh ~/Documents/'Paranormal Activity.mp4'
+./psp-video-converter.sh -f ~/Documents/'Paranormal Activity.mp4'
 ```
 
-The converted file is written to `out/` as `<input name> - PSP.mp4`. Copy that
-MP4 to the PSP's `VIDEO` directory.
+Convert all supported files directly in a directory with `-d`:
+
+```bash
+./psp-video-converter.sh -d ~/Documents/Movies
+```
+
+Directory conversion runs up to five files in parallel. Override that limit
+with `-b`:
+
+```bash
+./psp-video-converter.sh -d ~/Documents/Movies -b 3
+```
+
+Outputs are written to `out/` as `<input name> - PSP.mp4`. Directory scanning
+is non-recursive. Copy the resulting MP4 files to the PSP's `VIDEO` directory.
 
 ## Supported input formats
 
