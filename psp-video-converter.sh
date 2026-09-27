@@ -1,15 +1,15 @@
 #!/usr/bin/env bash
 # Convert an MP4 to a compact format playable by a PSP.
-# Usage: psp-video-convert.sh INPUT.mp4 [OUTPUT.mp4]
+# Usage: psp-video-converter.sh INPUT.mp4
 
 set -euo pipefail
 
 usage() {
-    printf 'Usage: %s INPUT.mp4 [OUTPUT.mp4]\n' "${0##*/}" >&2
-    printf 'Creates a 480x272 H.264 Baseline/AAC MP4 suitable for PSP playback.\n' >&2
+    printf 'Usage: %s INPUT.mp4\n' "${0##*/}" >&2
+    printf 'Creates a compact PSP-compatible MP4.\n' >&2
 }
 
-if [[ $# -lt 1 || $# -gt 2 ]]; then
+if [[ $# -ne 1 ]]; then
     usage
     exit 2
 fi
@@ -20,19 +20,23 @@ if [[ ! -f "$input" ]]; then
     exit 1
 fi
 
+if [[ "${input,,}" != *.mp4 ]]; then
+    printf 'Input must be an .mp4 file: %s\n' "$input" >&2
+    exit 1
+fi
+
 if ! command -v ffmpeg >/dev/null 2>&1; then
     printf 'ffmpeg is required but was not found in PATH.\n' >&2
     exit 1
 fi
 
-if [[ $# -eq 2 ]]; then
-    output=$2
-else
-    input_dir=$(dirname -- "$input")
-    input_name=$(basename -- "$input")
-    input_stem=${input_name%.*}
-    output="$input_dir/$input_stem - PSP.mp4"
-fi
+script_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
+input_name=$(basename -- "$input")
+input_stem=${input_name%.*}
+output_dir="$script_dir/out"
+output="$output_dir/$input_stem - PSP.mp4"
+
+mkdir -p -- "$output_dir"
 
 if [[ -e "$output" ]]; then
     printf 'Refusing to overwrite existing file: %s\n' "$output" >&2
