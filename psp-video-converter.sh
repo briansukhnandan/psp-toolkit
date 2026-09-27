@@ -1,11 +1,17 @@
 #!/usr/bin/env bash
-# Convert an MP4 to a compact format playable by a PSP.
-# Usage: psp-video-converter.sh INPUT.mp4
+# Convert a supported video file to a compact format playable by a PSP.
+# Usage: psp-video-converter.sh INPUT.<format>
 
 set -euo pipefail
 
+# Add input filename extensions here as support is added.
+supported_formats=(mp4 mkv)
+
+printf -v supported_formats_text '.%s, ' "${supported_formats[@]}"
+supported_formats_text=${supported_formats_text%, }
+
 usage() {
-    printf 'Usage: %s INPUT.mp4\n' "${0##*/}" >&2
+    printf 'Usage: %s INPUT.<format>\n' "${0##*/}" >&2
     printf 'Creates a compact PSP-compatible MP4.\n' >&2
 }
 
@@ -20,8 +26,17 @@ if [[ ! -f "$input" ]]; then
     exit 1
 fi
 
-if [[ "${input,,}" != *.mp4 ]]; then
-    printf 'Input must be an .mp4 file: %s\n' "$input" >&2
+input_lower=${input,,}
+input_supported=false
+for format in "${supported_formats[@]}"; do
+    if [[ "$input_lower" == *."$format" ]]; then
+        input_supported=true
+        break
+    fi
+done
+
+if [[ "$input_supported" != true ]]; then
+    printf 'Input must be one of the supported file formats: %s\n' "$supported_formats_text" >&2
     exit 1
 fi
 
