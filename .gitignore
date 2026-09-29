@@ -1,2 +1,2 @@
-out/*
-!out/README.md
+**/out/*
+!**/out/README.md
